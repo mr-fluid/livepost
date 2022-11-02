@@ -14,7 +14,9 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => 1,
+            'post_id' => 1,
+            'body' => []
         ];
     }
 }
