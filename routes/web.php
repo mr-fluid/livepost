@@ -13,19 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-    Route::get('/', function () {
-        return "Homepage";
-    });
-
-    Route::get('/test/{name}', function ($name) {
-        return $name;
-    })->where(['name' => '[A-Za-z]+']);
-
-
+Route::get('/', function () {
+    return "Homepage";
+});
 
 
 Route::fallback(function () {
     return abort(404);
 });
-
-

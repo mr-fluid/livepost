@@ -15,7 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::query()->get();
+        return response()->json([
+            'data' => $posts
+        ]);
     }
 
     /**
