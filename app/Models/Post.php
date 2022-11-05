@@ -13,6 +13,14 @@ class Post extends Model
         'body' => 'array'
     ];
 
+    protected $fillable =[
+        'title','body'
+    ];
+
+    protected $appends = [
+        'title_upper_case'
+    ];
+
     public function getTitleUpperCaseAttribute()
     {
         return strtoupper($this->title);
