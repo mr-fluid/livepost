@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Events\Models\User\UserCreated;
+use App\Exceptions\UserException;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +18,10 @@ class UserRepository extends BaseRepository
                 'password' => bcrypt(data_get($attributes, 'password', 'Admin@123'))
             ]);
 
-            if (!$created) {
-            }
+            throw_if(!$created, UserException::class, 'Exception Occured', 404);
+
+            event(new UserCreated($created));
+
             return $created;
         });
     }
@@ -30,8 +34,8 @@ class UserRepository extends BaseRepository
                 'email' => data_get($attributes, 'email', $user->email)
             ]);
 
-            if (!$updated) {
-            }
+            throw_if(!$updated, UserException::class, 'Exception Occured', 404);
+
             return $user;
         });
     }
@@ -40,8 +44,9 @@ class UserRepository extends BaseRepository
     {
         return DB::transaction(function () use ($user) {
             $deleted = $user->forceDelete();
-            if (!$deleted) {
-            }
+            
+            throw_if(!$deleted, UserException::class, 'Exception Occured', 404);
+
             return 'Deleted';
         });
     }

@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Exceptions\PostException;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\PostResource;
 use App\Repositories\PostRepository;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
@@ -33,6 +34,7 @@ class PostController extends Controller
         $created = $this->repository->create($request->only([
             'title', 'body'
         ]));
+        
         return new PostResource($created);
     }
 

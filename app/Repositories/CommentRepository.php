@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\CommentException;
 use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +17,7 @@ class CommentRepository extends BaseRepository
                 'post_id' => data_get($attributes, 'post_id', 1)
             ]);
 
-            if (!$created) {
-            }
+            throw_if(!$created, CommentException::class, 'Exception occured', 404);
             return $created;
         });
     }
@@ -31,8 +31,8 @@ class CommentRepository extends BaseRepository
                 'post_id' => data_get($attributes, 'post_id', $comment->post_id)
             ]);
 
-            if (!$updated) {
-            }
+            throw_if(!$updated, CommentException::class, 'Exception occured', 404);
+
             return $comment;
         });
     }
@@ -41,9 +41,8 @@ class CommentRepository extends BaseRepository
     {
         return DB::transaction(function () use ($comment) {
             $deleted = $comment->forceDelete();
-            if (!$deleted) {
+            throw_if(!$deleted, CommentException::class, 'Exception occured', 404);
 
-            }
             return 'Deleted';
         });
     }

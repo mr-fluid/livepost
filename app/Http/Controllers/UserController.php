@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Models\User\UserCreated;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -20,6 +21,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::query()->get();
+        
         return UserResource::collection($users);
     }
 
@@ -29,6 +31,7 @@ class UserController extends Controller
         $created = $this->repository->create($request->only([
             'name','email','password'
         ]));
+
         return new UserResource($created);
     }
 
